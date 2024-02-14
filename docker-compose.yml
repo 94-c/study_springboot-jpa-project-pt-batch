@@ -17,6 +17,7 @@ services:
       - TZ=Asia/Seoul
 
   webapp:
+    image: reg-kdev.kollus.com/hyeongwoo/springboot_batch:1.0.0
     build:
       context: .
       dockerfile: Dockerfile
