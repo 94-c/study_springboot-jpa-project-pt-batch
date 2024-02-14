@@ -2,7 +2,9 @@ name: Java CI-CD
 
 on:
   push:
-    branches: [ "develop" ]
+    branches:
+      - "develop"
+      - "feature/*"  # feature 브랜치에서의 push만을 대상으로 합니다.
   pull_request:
     branches: [ "develop" ]
 
@@ -21,7 +23,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
         with:
-          gradle-version: '7.3.3'
+          gradle-version: '8.5'
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
@@ -41,7 +43,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/setup-gradle@v1
         with:
-          gradle-version: '7.3.3'
+          gradle-version: '8.5'
 
       - name: generate application test report
         run: |
