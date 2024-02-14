@@ -1,6 +1,10 @@
-# 첫 번째 단계: Gradle 빌드 수행
-FROM adoptopenjdk/openjdk17 AS builder
-WORKDIR /app
+FROM mysql:8.0.30
+COPY ./db/conf.d /etc/mysql/conf.d
+COPY ./db/initdb.d /docker-entrypoint-initdb.d
+
+RUN chmod 644 /etc/mysql/conf.d/my.cnf
+
+FROM openjdk:17 AS builder
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
@@ -9,9 +13,7 @@ COPY src src
 RUN chmod +x ./gradlew
 RUN ./gradlew bootJar
 
-# 두 번째 단계: 실행 가능한 JAR 파일을 별도의 이미지 레이어로 복사
 FROM adoptopenjdk/openjdk17
-WORKDIR /app
-COPY --from=builder /app/build/libs/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+COPY --from=builder build/libs/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 VOLUME /tmp
