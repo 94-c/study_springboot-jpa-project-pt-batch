@@ -4,6 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.1.4'
     id "org.sonarqube" version "4.2.1.3168"
+    id 'jacoco'
 }
 group = 'com.backend'
 version = '0.0.1-SNAPSHOT'
@@ -53,6 +54,8 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
@@ -62,17 +65,43 @@ dependencies {
     implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 }
 
-tasks.named('bootBuildImage') {
-    builder = 'paketobuildpacks/builder-jammy-base:latest'
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true // sonarqube 분석에 필요한 xml파일만 생성
+        csv.enabled false
+        html.enabled false
+    }
+
 }
 
 sonar {
     properties {
         property "sonar.projectKey", "hw.choi_spring_batch_project"
         property "sonar.projectName", "hw.choi_spring_batch_project"
+        property "sonar.host.url", System.getenv("SONAR_HOST_URL")
+        property "sonar.token", System.getenv("SONAR_TOKEN")
+        property "sonar.sources", "src"
+        property "sonar.language", "java"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.profile", "Sonar way"
+        property "sonar.java.binaries", "${buildDir}/classes"
+        property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     }
 }
