@@ -69,3 +69,10 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+sonar {
+    properties {
+        property "sonar.projectKey", "hw.choi_spring_batch_project"
+        property "sonar.projectName", "hw.choi_spring_batch_project"
+    }
+}
