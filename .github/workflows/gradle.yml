@@ -35,5 +35,10 @@ jobs:
       - name: Login to Harbor Registry
         run: docker login -u ${{ secrets.HARBOR_USERNAME }} -p ${{ secrets.HARBOR_PASSWORD }} ${{ secrets.HARBOR_URL }}
 
+      - name: Tag Docker image
+        run: |
+          IMAGE_NAME=springboot_batch
+          docker tag myapp:latest ${{ secrets.HARBOR_URL }}/$IMAGE_NAME:${{ github.run_number }}
+
       - name: Push Docker image to Harbor Registry
-        run: docker push ${{ secrets.HARBOR_URL }}/springboot:${{ github.run_number }}
+        run: docker push ${{ secrets.HARBOR_URL }}/$IMAGE_NAME:${{ github.run_number }}
