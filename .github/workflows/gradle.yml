@@ -38,10 +38,14 @@ jobs:
       - name: Build Docker image
         run: docker build -t myapp:latest .
 
-      - name: Tag Docker image
+      - name: Set IMAGE_NAME variable
         run: |
           IMAGE_NAME=springboot_batch
+
+      - name: Tag Docker image
+        run: |
           docker tag myapp:latest ${{ secrets.HARBOR_URL }}/$IMAGE_NAME:${{ github.run_number }}
 
       - name: Push Docker image to Harbor Registry
-        run: docker push ${{ secrets.HARBOR_URL }}/$IMAGE_NAME:${{ github.run_number }}
+        run: |
+          docker push ${{ secrets.HARBOR_URL }}/$IMAGE_NAME:${{ github.run_number }}
