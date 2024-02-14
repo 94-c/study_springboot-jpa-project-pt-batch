@@ -8,35 +8,15 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  sonar-push:
+  sonarqube:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: '8.5'
-
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Generate application test report
-        run: |
-          ./gradlew test --parallel
-
-      - name: Build and analyze with SonarQube
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: |
-          ./gradlew sonarqube -Dorg.gradle.jvmargs=-Xmx4g -Pversion=${GITHUB_SHA} --parallel

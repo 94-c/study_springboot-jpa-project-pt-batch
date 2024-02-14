@@ -57,6 +57,9 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     testImplementation 'org.apache.commons:commons-lang3:3.12.0'
+
+    //sonarqube
+    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 }
 
 tasks.named('bootBuildImage') {
