@@ -31,3 +31,9 @@ jobs:
       - name: Build with Gradle Wrapper excluding test package
         run: |
           ./gradlew build -x test
+
+      - name: Login to Harbor Registry
+        run: docker login -u ${{ secrets.HARBOR_USERNAME }} -p ${{ secrets.HARBOR_PASSWORD }} ${{ secrets.HARBOR_URL }}
+
+      - name: Push Docker image to Harbor Registry
+        run: docker push ${{ secrets.HARBOR_URL }}/springboot:${{ github.run_number }}
