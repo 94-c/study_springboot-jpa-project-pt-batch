@@ -44,8 +44,10 @@ jobs:
 
       - name: Tag Docker image
         run: |
-          docker tag myapp:latest ${{ secrets.HARBOR_URL }}/$IMAGE_NAME:${{ github.run_number }}
+          IMAGE_NAME=springboot_batch
+          docker tag myapp:latest reg-kdev.kollus.com/hyeongwoo/$IMAGE_NAME:${{ github.run_number }}
+      
 
       - name: Push Docker image to Harbor Registry
         run: |
-          docker push ${{ secrets.HARBOR_URL }}/$IMAGE_NAME:${{ github.run_number }}
+          docker push reg-kdev.kollus.com/hyeongwoo/$IMAGE_NAME:${{ github.run_number }}
