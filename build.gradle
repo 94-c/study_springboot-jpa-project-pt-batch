@@ -95,6 +95,7 @@ sonar {
         property "sonar.projectName", "hw.choi_spring_batch_project"
         property "sonar.host.url", System.getenv("SONAR_HOST_URL")
         property "sonar.token", System.getenv("SONAR_TOKEN")
+        property "sonar.java.binaries", "build/classes/java/main"
         property "sonar.sources", "src"
         property "sonar.language", "java"
         property "sonar.sourceEncoding", "UTF-8"
