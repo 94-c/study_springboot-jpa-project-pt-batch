@@ -95,12 +95,11 @@ sonar {
         property "sonar.projectName", "hw.choi_spring_batch_project"
         property "sonar.host.url", System.getenv("SONAR_HOST_URL")
         property "sonar.token", System.getenv("SONAR_TOKEN")
-        property "sonar.java.binaries", "build/classes/java/main"
         property "sonar.sources", "src"
         property "sonar.language", "java"
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.profile", "Sonar way"
-        property "sonar.java.binaries", "${buildDir}/classes"
+        property "sonar.java.binaries", "build/classes/java/main"
         property "sonar.test.inclusions", "**/*Test.java"
         property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**"
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
