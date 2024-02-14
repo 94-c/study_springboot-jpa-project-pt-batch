@@ -67,17 +67,3 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
     useJUnitPlatform()
 }
-sonarqube {
-    properties {
-        property 'sonar.projectKey', 'hw.choi_spring_batch_project'
-        property 'sonar.organization', 'hw.choi_spring_batch_project'
-        property 'sonar.sources', 'src' // 소스 코드 디렉토리 변경
-        property 'sonar.java.binaries', 'build/classes/java/main' // 클래스 파일 디렉토리 변경
-        property 'sonar.language', 'java'
-        property 'sonar.projectVersion', '1.1.0-SNAPSHOT'
-        property 'sonar.sourceEncoding', 'UTF-8'
-        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
-        property 'sonar.test.inclusions', '**/*Test.java'
-        property 'sonar.exclusions', '**/test/**, **/Q*.java, **/*Doc*.java, **/resources/**'
-    }
-}
