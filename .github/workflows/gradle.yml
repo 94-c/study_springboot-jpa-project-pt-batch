@@ -35,6 +35,9 @@ jobs:
       - name: Login to Harbor Registry
         run: docker login -u ${{ secrets.HARBOR_USERNAME }} -p ${{ secrets.HARBOR_PASSWORD }} ${{ secrets.HARBOR_URL }}
 
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
+
       - name: Tag Docker image
         run: |
           IMAGE_NAME=springboot_batch
