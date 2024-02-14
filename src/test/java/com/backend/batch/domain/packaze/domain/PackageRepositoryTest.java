@@ -91,6 +91,7 @@ class PackageRepositoryTest {
 
         // then
         assertTrue(packageRepository.findById(newPackage.getPackageSeq()).isEmpty());
+
     }
 
 }
