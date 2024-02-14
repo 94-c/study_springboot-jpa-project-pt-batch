@@ -1,10 +1,7 @@
 FROM eclipse-temurin:17
 
-# JAR 파일 경로
-ARG JAR_FILE=target/*.jar
-
 # 빌드 결과물을 복사
-COPY ${JAR_FILE} app.jar
+COPY app.jar app.jar
 
 EXPOSE 8081
 
