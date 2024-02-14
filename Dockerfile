@@ -1,8 +1,19 @@
+FROM mysql:8.0.30
+COPY ./db/conf.d /etc/mysql/conf.d
+COPY ./db/initdb.d /docker-entrypoint-initdb.d
+
+RUN chmod 644 /etc/mysql/conf.d/my.cnf
+
+FROM eclipse-temurin:17 AS builder
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+COPY settings.gradle .
+COPY src src
+RUN chmod +x ./gradlew
+RUN ./gradlew bootJar
+
 FROM eclipse-temurin:17
-
-# 빌드 결과물을 복사
-COPY app.jar app.jar
-
-EXPOSE 8081
-
-ENTRYPOINT ["java","-jar","app.jar"]
+COPY --from=builder build/libs/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+VOLUME /tmp
