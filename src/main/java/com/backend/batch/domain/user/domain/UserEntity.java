@@ -46,5 +46,4 @@ public class UserEntity extends BaseEntity {
         return uuid;
     }
 
-
 }
