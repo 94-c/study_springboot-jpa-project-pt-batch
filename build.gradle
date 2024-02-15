@@ -1,8 +1,8 @@
-
 plugins {
     id 'java'
+    id 'jacoco'
     id 'org.springframework.boot' version '2.7.3'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id "org.sonarqube" version "4.2.1.3168"
 }
 group = 'com.backend'
@@ -58,12 +58,42 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     testImplementation 'org.apache.commons:commons-lang3:3.12.0'
 
+    /** sonarqube **/
+    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+
 }
 
-tasks.named('bootBuildImage') {
-    builder = 'paketobuildpacks/builder-jammy-base:latest'
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+
+sonar {
+    properties {
+        property "sonar.projectKey", "hw.choi_spring_batch_project"
+        property "sonar.projectName", "hw.choi_spring_batch_project"
+        property "sonar.projectVersion", "1.1"
+        property "sonar.host.url", System.getenv("SONAR_URL")
+        property "sonar.token", System.getenv("SONAR_TOKEN")
+        property "sonar.sources", "src"
+        property "sonar.language", "java"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.profile", "Sonar way"
+        property "sonar.java.binaries", "${buildDir}/classes/java/main"
+        property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
+
