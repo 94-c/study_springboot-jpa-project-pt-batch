@@ -4,6 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.1.4'
     id "org.sonarqube" version "4.2.1.3168"
+    id 'jacoco'
 }
 group = 'com.backend'
 version = '0.0.1-SNAPSHOT'
@@ -58,6 +59,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     testImplementation 'org.apache.commons:commons-lang3:3.12.0'
 
+    /** sonarqube **/
+    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 }
 
 tasks.named('bootBuildImage') {
@@ -66,4 +69,31 @@ tasks.named('bootBuildImage') {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true // sonarqube 분석에 필요한 xml파일만 생성
+        csv.enabled false
+        html.enabled false
+    }
+
+}
+sonarqube {
+    properties {
+        property 'sonar.projectKey', 'hw.choi_spring_batch_project'
+        property 'sonar.organization', 'hw.choi_spring_batch_project'
+        property 'sonar.sources', 'src' // 소스 코드 디렉토리 변경
+        property 'sonar.java.binaries', 'build/classes/java/main' // 클래스 파일 디렉토리 변경
+        property 'sonar.language', 'java'
+        property 'sonar.projectVersion', '1.1.0-SNAPSHOT'
+        property 'sonar.sourceEncoding', 'UTF-8'
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+        property 'sonar.test.inclusions', '**/*Test.java'
+        property 'sonar.exclusions', '**/test/**, **/Q*.java, **/*Doc*.java, **/resources/**'
+    }
 }
