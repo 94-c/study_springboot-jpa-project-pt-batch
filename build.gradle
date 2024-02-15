@@ -58,12 +58,13 @@ dependencies {
 
 }
 
-tasks.named('bootBuildImage') {
-    builder = 'paketobuildpacks/builder-jammy-base:latest'
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+jacoco {
+    toolVersion = "0.8.7"
 }
 
 sonarqube {
@@ -79,5 +80,6 @@ sonarqube {
         property "sonar.test.inclusions", "**/*Test.java"
         property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**"
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        // Add your SonarQube server properties here
     }
 }
