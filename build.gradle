@@ -81,7 +81,7 @@ jacoco {
 
 sonar {
     properties {
-        property "sonar.projectKey", "spring_batch_project"
+        property "sonar.projectKey", "batchproject"
         property "sonar.projectName", "hw.choi_spring_batch_project"
         property "sonar.projectVersion", "1.1"
         property "sonar.host.url", System.getenv("SONAR_URL")
