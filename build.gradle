@@ -58,13 +58,12 @@ dependencies {
 
 }
 
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
+tasks.named('bootBuildImage') {
+    builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
 
-jacoco {
-    toolVersion = "0.8.7"
+tasks.named('test') {
+    useJUnitPlatform()
 }
 
 sonarqube {
