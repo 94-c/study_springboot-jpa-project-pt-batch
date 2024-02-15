@@ -40,7 +40,6 @@ public class BookingEntity extends BaseEntity {
 
     public LocalDateTime getStatisticsAt() {
         return this.endedAt.withHour(0).withMinute(0).withSecond(0).withNano(0);
-
     }
 
 }
